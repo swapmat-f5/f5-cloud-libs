@@ -107,14 +107,12 @@ tmsh create net route /LOCAL_ONLY/default network default gw "$GATEWAY"
 GW_SET=false
 while [ $GW_SET == false ] 
 do
-    route -n|grep '^0.0.0.0.*external$' &> /dev/null
-    if [ $? -eq 0 ]
-    then
-        GW_SET=true
-    else
-        GW_SET=false
+    if ! route -n|grep '^0.0.0.0.*external$' &> /dev/null; then
+        tmsh delete net route /LOCAL_ONLY/default
         echo tmsh create net route /LOCAL_ONLY/default network default gw "$GATEWAY"
         tmsh create net route /LOCAL_ONLY/default network default gw "$GATEWAY"
+    else
+        GW_SET=true
     fi
     echo "GW_SET = $GW_SET"
 done
