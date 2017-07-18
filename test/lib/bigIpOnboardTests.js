@@ -431,35 +431,13 @@ module.exports = {
                 ]
             );
 
+            test.expect(1);
             bigIp.onboard.licenseViaBigIq()
                 .then(function () {
                     test.ok(false, 'Should have thrown version too old');
                 })
                 .catch(function(err) {
-                    test.notStrictEqual(err.indexOf('is only supported on BIG-IQ versions'), -1);
-                })
-                .finally(function() {
-                    test.done();
-                });
-        },
-
-        testVersionTooNew: function(test) {
-            icontrolMock.when(
-                'list',
-                '/shared/resolver/device-groups/cm-shared-all-big-iqs/devices?$select=version',
-                [
-                    {
-                        version: '5.2.0'
-                    }
-                ]
-            );
-
-            bigIp.onboard.licenseViaBigIq()
-                .then(function () {
-                    test.ok(false, 'Should have thrown version too new');
-                })
-                .catch(function(err) {
-                    test.notStrictEqual(err.indexOf('is only supported on BIG-IQ versions'), -1);
+                    test.notStrictEqual(err.message.indexOf('is only supported on BIG-IQ versions'), -1);
                 })
                 .finally(function() {
                     test.done();
@@ -472,6 +450,8 @@ module.exports = {
                 '/cm/shared/licensing/pools/?$select=uuid,name',
                 []
             );
+
+            test.expect(1);
             bigIp.onboard.licenseViaBigIq()
                 .then(function() {
                     test.ok(false, "Should have thrown no pools.");
@@ -490,6 +470,8 @@ module.exports = {
                 '/cm/shared/licensing/pools/?$select=uuid,name',
                 {}
             );
+
+            test.expect(1);
             bigIp.onboard.licenseViaBigIq()
                 .then(function() {
                     test.ok(false, "Should have thrown no pools.");
@@ -526,7 +508,6 @@ module.exports = {
                 );
 
                 test.expect(1);
-
                 bigIp.onboard.licenseViaBigIq('host', 'user', testArn, 'pool1', 'bigIpMgmtAddress', {passwordIsUri: true})
                     .then(function() {
                         test.strictEqual(arnCalled, testArn);
