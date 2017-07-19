@@ -514,6 +514,36 @@ module.exports = {
                     });
             },
 
+            testPortSpecified: function(test) {
+                var specifiedPort = '8787';
+
+                icontrolMock.when(
+                    'create',
+                    '/cm/shared/licensing/pools/1/members',
+                    {
+                        state: 'LICENSED'
+                    }
+                );
+
+                bigIp.onboard.licenseViaBigIq('host', 'user', 'password', 'pool1', {bigIpMgmtAddress: 'bigIpMgmtAddress', bigIpMgmtPort: specifiedPort})
+                    .then(function() {
+                        test.deepEqual(icontrolMock.getRequest(
+                            'create',
+                            '/cm/shared/licensing/pools/1/members'),
+                            {
+                                deviceAddress: 'bigIpMgmtAddress:' + specifiedPort,
+                                username: 'user',
+                                password: 'password'
+                            });
+                    })
+                    .catch(function(err) {
+                        test.ok(false, err.message);
+                    })
+                    .finally(function() {
+                        test.done();
+                    });
+            },
+
             testPasswordIsUri: {
                 testBasic: function(test) {
                     var testArn = 'arn:aws:s3:::myBucket/myKey';
