@@ -348,7 +348,6 @@
                                     options.bigIqUser,
                                     options.bigIqPassword || options.bigIqPasswordUri,
                                     options.licensePoolName,
-                                    options.bigIpMgmtAddress,
                                     {
                                         passwordIsUri: typeof options.bigIqPasswordUri !== 'undefined',
                                         bigIpMgmtAddress: options.bigIpMgmtAddress,
