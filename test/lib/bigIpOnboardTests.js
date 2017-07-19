@@ -508,7 +508,7 @@ module.exports = {
                 );
 
                 test.expect(1);
-                bigIp.onboard.licenseViaBigIq('host', 'user', testArn, 'pool1', 'bigIpMgmtAddress', {passwordIsUri: true})
+                bigIp.onboard.licenseViaBigIq('host', 'user', testArn, 'pool1', {passwordIsUri: true, bigIpMgmtAddress: 'bigIpMgmtAddress'})
                     .then(function() {
                         test.strictEqual(arnCalled, testArn);
                     })
@@ -533,7 +533,7 @@ module.exports = {
                 test.expect(1);
 
                 bigIp.onboard.provider = provider;
-                bigIp.onboard.licenseViaBigIq('host', 'user', 'arn:aws:s3:::myBucket/myKey', 'pool1', 'bigIpMgmtAddress', {passwordIsUri: true})
+                bigIp.onboard.licenseViaBigIq('host', 'user', 'arn:aws:s3:::myBucket/myKey', 'pool1', {passwordIsUri: true, bigIpMgmtAddress: 'bigIpMgmtAddress'})
                     .then(function() {
                         test.ok(false, 'Should have thrown unimplemented abstract method');
                     })
@@ -554,7 +554,7 @@ module.exports = {
                     state: 'LICENSED'
                 }
             );
-            bigIp.onboard.licenseViaBigIq('host', 'user', 'password', 'pool1', 'bigIpMgmtAddress')
+            bigIp.onboard.licenseViaBigIq('host', 'user', 'password', 'pool1', {bigIpMgmtAddress: 'bigIpMgmtAddress'})
                 .then(function() {
                     test.deepEqual(icontrolMock.getRequest(
                         'create',
@@ -590,7 +590,7 @@ module.exports = {
                     state: 'LICENSED'
                 }
             );
-            bigIp.onboard.licenseViaBigIq('host', 'user', 'password', 'pool1', 'bigIpMgmtAddress')
+            bigIp.onboard.licenseViaBigIq('host', 'user', 'password', 'pool1', {bigIpMgmtAddress: 'bigIpMgmtAddress'})
                 .then(function() {
                     test.strictEqual(icontrolMock.lastCall.method, 'list');
                     test.strictEqual(icontrolMock.lastCall.path, '/cm/shared/licensing/pools/1/members/' + licenseUuid);
@@ -646,7 +646,7 @@ module.exports = {
                 }
             );
             bigIp.port = 8443;
-            bigIp.onboard.licenseViaBigIq('host', 'user', 'password', 'pool1', 'bigIpMgmtAddress')
+            bigIp.onboard.licenseViaBigIq('host', 'user', 'password', 'pool1', {bigIpMgmtAddress: 'bigIpMgmtAddress'})
                 .then(function() {
                     test.deepEqual(icontrolMock.getRequest(
                         'create',
